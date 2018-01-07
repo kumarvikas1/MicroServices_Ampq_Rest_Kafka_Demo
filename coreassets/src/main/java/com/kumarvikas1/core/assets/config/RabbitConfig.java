@@ -11,12 +11,14 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.amqp.support.converter.Jackson2JsonMessageConverter;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
+import org.springframework.context.annotation.EnableAspectJAutoProxy;
 
 /**
  * Created by vikakumar on 12/31/17.
  */
 @Configuration
 @EnableRabbit
+@EnableAspectJAutoProxy(proxyTargetClass = true)
 public class RabbitConfig {
 
 	@Bean

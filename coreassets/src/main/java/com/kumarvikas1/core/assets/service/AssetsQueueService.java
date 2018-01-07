@@ -1,5 +1,6 @@
 package com.kumarvikas1.core.assets.service;
 
+import com.kumarvikas1.core.assets.metrics.TimeTaken;
 import com.kumarvikas1.core.models.Assets;
 import com.kumarvikas1.core.models.BankingResponse;
 import com.kumarvikas1.core.models.Error;
@@ -7,6 +8,7 @@ import java.util.concurrent.CompletableFuture;
 import org.springframework.amqp.core.Queue;
 import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Profile;
 import org.springframework.stereotype.Component;
 
@@ -20,6 +22,8 @@ public class AssetsQueueService implements CoreService {
 	@Autowired RabbitTemplate rabbitTemplate;
 
 
+	@TimeTaken(name = "assetsQueueService")
+	@Cacheable(value = "core-assets",key="#accountId")
 	@Override public BankingResponse getAssets(String accountId) {
 		Assets assets = new Assets();
 		assets.setAccountId(accountId);

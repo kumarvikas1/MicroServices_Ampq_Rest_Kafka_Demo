@@ -3,10 +3,12 @@ package com.kumarvikas1.core.assets.controller;
 import com.kumarvikas1.core.assets.service.AssetsService;
 import com.kumarvikas1.core.assets.service.CoreService;
 import com.kumarvikas1.core.models.BankingResponse;
+import com.kumarvikas1.core.models.Transaction;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,6 +29,12 @@ public class BankingController {
 
 	@RequestMapping(method = RequestMethod.GET,value = "/")
 	public ResponseEntity alive() {
+		return new ResponseEntity(HttpStatus.OK);
+	}
+
+
+	@RequestMapping(method = RequestMethod.POST,value = "/")
+	public ResponseEntity transactions(@RequestBody Transaction transaction) {
 		return new ResponseEntity(HttpStatus.OK);
 	}
 

@@ -1,5 +1,6 @@
 package com.kumarvikas1.core.assets.service;
 
+import com.kumarvikas1.core.assets.metrics.TimeTaken;
 import com.kumarvikas1.core.models.Assets;
 import com.kumarvikas1.core.models.BankingResponse;
 import com.kumarvikas1.core.models.Error;
@@ -11,6 +12,7 @@ import java.util.Objects;
 import java.util.concurrent.CompletableFuture;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Profile;
 import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Service;
@@ -37,6 +39,9 @@ public class AssetsService implements CoreService{
 	@Value("${bank.server}")
 	private String bankServer;
 
+	@TimeTaken(name = "assetsService")
+	@Cacheable(value = "core-assets",key="#accountId")
+	@Override
 	public BankingResponse getAssets(String accountId) {
 		List<CompletableFuture<Assets>> completableFutures = new ArrayList<>();
 		if(accountExistService.isAccountKnown(accountId)) {
