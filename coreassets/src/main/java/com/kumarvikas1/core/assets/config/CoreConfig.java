@@ -44,8 +44,8 @@ public class CoreConfig {
 	}
 
 	@Bean
-	public ProducerFactory<Integer, String> producerFactory() {
-		return new DefaultKafkaProducerFactory<Integer, String>(producerConfigs());
+	public ProducerFactory<String, String> producerFactory() {
+		return new DefaultKafkaProducerFactory<String, String>(producerConfigs());
 	}
 
 	@Bean
@@ -58,8 +58,8 @@ public class CoreConfig {
 	}
 
 	@Bean
-	public KafkaTemplate<Integer, String> kafkaTemplate() {
-		return new KafkaTemplate<Integer, String>(producerFactory());
+	public KafkaTemplate<String, String> kafkaTemplate() {
+		return new KafkaTemplate<String, String>(producerFactory());
 	}
 
 }

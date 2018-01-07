@@ -1,5 +1,6 @@
 package com.kumarvikas1.core.assets.service;
 
+import com.kumarvikas1.core.assets.error.Recovery;
 import com.kumarvikas1.core.assets.metrics.TimeTaken;
 import com.kumarvikas1.core.models.Assets;
 import com.kumarvikas1.core.models.BankingResponse;
@@ -23,7 +24,7 @@ import org.springframework.web.client.RestTemplate;
  */
 @Service
 @Profile("rest")
-public class AssetsService implements CoreService{
+public class AssetsService extends CoreService{
 
 	@Autowired
 	private AccountExistService accountExistService;
@@ -31,6 +32,8 @@ public class AssetsService implements CoreService{
 	private KafkaTemplate kafkaTemplate;
 	@Autowired
 	private RestTemplate restTemplate;
+	@Autowired
+	private Recovery recovery;
 
 
 
@@ -54,17 +57,25 @@ public class AssetsService implements CoreService{
 				try {
 					return f.get();
 				} catch (Exception e) {
-					kafkaTemplate.send("accountError", 2, accountId);
+					kafkaTemplate.send("accountError", accountId);
 					return null;
 				}
 			}).filter(Objects::nonNull).mapToDouble(Assets::getTotal).sum());
 			return retval;
 		} else {
-			kafkaTemplate.send("accountError",1,accountId);
+			kafkaTemplate.send("accountError",accountId);
 			Error retval = new Error();
 			retval.setErrorDescription("Account not exisit");
 			return retval;
 		}
+	}
+
+	public Recovery recovery() {
+		return recovery;
+	}
+
+	@Override public KafkaTemplate getKafkaTemplate() {
+		return kafkaTemplate;
 	}
 
 	private Assets getForObject(String accountId,String url){

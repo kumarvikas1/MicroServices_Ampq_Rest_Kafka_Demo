@@ -1,5 +1,6 @@
 package com.kumarvikas1.core.assets.service;
 
+import com.kumarvikas1.core.assets.error.Recovery;
 import com.kumarvikas1.core.assets.metrics.TimeTaken;
 import com.kumarvikas1.core.models.Assets;
 import com.kumarvikas1.core.models.BankingResponse;
@@ -10,6 +11,7 @@ import org.springframework.amqp.rabbit.core.RabbitTemplate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.cache.annotation.Cacheable;
 import org.springframework.context.annotation.Profile;
+import org.springframework.kafka.core.KafkaTemplate;
 import org.springframework.stereotype.Component;
 
 /**
@@ -17,10 +19,14 @@ import org.springframework.stereotype.Component;
  */
 @Component
 @Profile("queue")
-public class AssetsQueueService implements CoreService {
+public class AssetsQueueService extends CoreService {
 
 	@Autowired RabbitTemplate rabbitTemplate;
 
+	@Autowired Recovery recovery;
+
+	@Autowired
+	private KafkaTemplate kafkaTemplate;
 
 	@TimeTaken(name = "assetsQueueService")
 	@Cacheable(value = "core-assets",key="#accountId")
@@ -35,5 +41,13 @@ public class AssetsQueueService implements CoreService {
 			assets.setTotal(0.00);
 		}
 		return assets;
+	}
+
+	public Recovery recovery() {
+		return recovery;
+	}
+
+	@Override public KafkaTemplate getKafkaTemplate() {
+		return kafkaTemplate;
 	}
 }

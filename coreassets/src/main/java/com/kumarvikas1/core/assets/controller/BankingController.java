@@ -4,6 +4,7 @@ import com.kumarvikas1.core.assets.service.AssetsService;
 import com.kumarvikas1.core.assets.service.CoreService;
 import com.kumarvikas1.core.models.BankingResponse;
 import com.kumarvikas1.core.models.Transaction;
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
@@ -34,7 +35,7 @@ public class BankingController {
 
 
 	@RequestMapping(method = RequestMethod.POST,value = "/")
-	public ResponseEntity transactions(@RequestBody Transaction transaction) {
+	public ResponseEntity transactions(@RequestBody List<Transaction> transaction) {
 		return new ResponseEntity(HttpStatus.OK);
 	}
 
