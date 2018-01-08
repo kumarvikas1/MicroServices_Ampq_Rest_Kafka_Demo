@@ -24,6 +24,26 @@ public class Transaction {
 	@JsonProperty("type")
 	private Type type;
 
+	public String getAccountId() {
+		return accountId;
+	}
+
+	public String getCreditAmount() {
+		return creditAmount;
+	}
+
+	public String getDate() {
+		return date;
+	}
+
+	public String getDebitAmount() {
+		return debitAmount;
+	}
+
+	public Type getType() {
+		return type;
+	}
+
 	static enum Type {
 		Account("Account"),
 		Stocks("Stocks");

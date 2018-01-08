@@ -3,7 +3,6 @@ package com.kumarvikas1.core.assets.service;
 import com.kumarvikas1.core.assets.error.Recovery;
 import com.kumarvikas1.core.models.BankingResponse;
 import com.kumarvikas1.core.models.Transaction;
-import java.util.ArrayList;
 import java.util.List;
 import org.springframework.kafka.core.KafkaTemplate;
 
@@ -19,8 +18,10 @@ public abstract class CoreService {
 
 	public void postAccountDetails(List<Transaction> transactionList) {
 		try {
+			System.out.println(transactionList.size());
 			getKafkaTemplate().send("transactions", transactionList);
 		} catch(Exception e){
+			e.printStackTrace();
 			recovery().addErrorTransactions(transactionList);
 		}
 	}

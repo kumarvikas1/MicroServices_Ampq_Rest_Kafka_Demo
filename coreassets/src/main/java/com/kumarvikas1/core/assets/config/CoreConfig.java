@@ -3,6 +3,7 @@ package com.kumarvikas1.core.assets.config;
 import com.codahale.metrics.JmxReporter;
 import com.codahale.metrics.MetricRegistry;
 import com.kumarvikas1.core.assets.metrics.Measure;
+import com.kumarvikas1.core.models.TransactionsDeserializer;
 import java.util.HashMap;
 import java.util.Map;
 import org.apache.kafka.clients.producer.ProducerConfig;

@@ -36,6 +36,7 @@ public class BankingController {
 
 	@RequestMapping(method = RequestMethod.POST,value = "/")
 	public ResponseEntity transactions(@RequestBody List<Transaction> transaction) {
+		coreService.postAccountDetails(transaction);
 		return new ResponseEntity(HttpStatus.OK);
 	}
 
