@@ -1,6 +1,11 @@
 package com.kumarvikas1.core.stocks.queue;
 
+import com.kumarvikas1.core.models.Assets;
 import com.kumarvikas1.core.models.Transaction;
+import com.kumarvikas1.core.models.Transaction.Type;
+import com.kumarvikas1.core.stocks.StocksDetails;
+import java.util.Arrays;
+import java.util.function.Function;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,17 +22,24 @@ import org.springframework.stereotype.Component;
 @Component
 public class StockListeners {
 
-	@Autowired ConsumerFactory consumerFactory;
-
-	@Autowired
-	KafkaConsumer kafkaConsumer;
+	@Autowired StocksDetails stocksDetails;
 
 
 	@KafkaListener(id = "order",topics = "transactions",containerFactory = "kafkaListenerContainerFactory")
 	public void receive(Transaction[] payload,@Header(KafkaHeaders.OFFSET) Integer offset, Acknowledgment ack, ConsumerRecord consumerRecord) {
-		System.out.println("payload "+payload.length);
-		System.out.println(payload[0].getAccountId());
+		Arrays.asList(payload).stream().filter(f -> f.getType().equals(Type.Stocks)).map(getTransactionAssetsFunction())
+				.forEach(stocksDetails::addAccounts);
 		ack.acknowledge();
 	}
+
+	private Function<Transaction, Assets> getTransactionAssetsFunction() {
+		return f -> {
+			Assets retval = new Assets();
+			retval.setAccountId(f.getAccountId());
+			retval.setTotal(Double.valueOf(f.getCreditAmount())- Double.valueOf(f.getDebitAmount()));
+			return retval;
+		};
+	}
+
 
 }

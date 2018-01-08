@@ -31,4 +31,8 @@ public class AccountDetails {
 		return assetsHashMap.get(accountId);
 	}
 
+	public void addAccounts(Assets assets){
+		assetsHashMap.put(assets.getAccountId(),assets);
+	}
+
 }

@@ -44,7 +44,7 @@ public class Transaction {
 		return type;
 	}
 
-	static enum Type {
+	public static enum Type {
 		Account("Account"),
 		Stocks("Stocks");
 
