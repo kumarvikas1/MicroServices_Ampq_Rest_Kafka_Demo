@@ -6,6 +6,7 @@ import com.kumarvikas1.core.models.Transaction.Type;
 import com.kumarvikas1.core.natwest.AccountDetails;
 import java.util.Arrays;
 import java.util.Map;
+import java.util.Optional;
 import java.util.function.Function;
 import org.apache.kafka.clients.consumer.ConsumerRecord;
 import org.apache.kafka.clients.consumer.KafkaConsumer;
@@ -39,7 +40,8 @@ public class AccountListeners{
 		return f -> {
 			Assets retval = new Assets();
 			retval.setAccountId(f.getAccountId());
-			retval.setTotal(Double.valueOf(f.getCreditAmount())- Double.valueOf(f.getDebitAmount()));
+			retval.setTotal(Double.valueOf(Optional.ofNullable(f.getCreditAmount()).orElse("0.0"))-
+					Double.valueOf(Optional.ofNullable(f.getDebitAmount()).orElse("0.0")));
 			return retval;
 		};
 	}

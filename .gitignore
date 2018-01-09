@@ -1,0 +1,6 @@
+.idea/
+coreassets/target
+*.iml
+coremodels/target
+natwest/target
+stocks/target

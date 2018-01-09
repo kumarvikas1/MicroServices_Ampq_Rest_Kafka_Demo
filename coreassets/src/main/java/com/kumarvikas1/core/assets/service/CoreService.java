@@ -18,7 +18,6 @@ public abstract class CoreService {
 
 	public void postAccountDetails(List<Transaction> transactionList) {
 		try {
-			System.out.println(transactionList.size());
 			getKafkaTemplate().send("transactions", transactionList);
 		} catch(Exception e){
 			e.printStackTrace();
